@@ -1,138 +1,72 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import MonkeyUi from '../../components/monkeyui.js';
-import MonkeyUi from '../../monkeyui.js';
+import MonkeyUi from '../../lib/monkeyui.js';
+import LeftPage from './LeftPage.js';
+import Headdiv from './head.js';
+import Page from './Page.js';
+import Button from './button.js';
+import Icon from './icon.js';
+import Alert from './alert.js';
+import Checkbox from './checkbox.js';
+import Modal from './modal.js';
+import Timeline from './timeline.js';
+import Carousel from './carousel.js';
+import Tree from './tree.js';
+import Complete from './complete.js';
+import Grid from './grid';
+// import TreeSelect from './treeselect.js';
+import Upload from './upload.js';
+var Row=MonkeyUi.Row;
+var Col=MonkeyUi.Col;
+var Radio=MonkeyUi.Radio;
+var Table=MonkeyUi.Table;
+var Input = MonkeyUi.Input;
+import {
+  Router,
+  Route,
+  Link,
+  IndexRoute,
+  hashHistory,
+} from 'react-router';
 
-var Row = MonkeyUi.Row;
-var Col = MonkeyUi.Col;
-var Button = MonkeyUi.Button;
-var CheckBox = MonkeyUi.CheckBox;
-var Modal =MonkeyUi.Modal;
-var Tree = MonkeyUi.Tree;
 
-const confirm = Modal.confirm;
-const DemoBox = props => <p className={`height-${props.value}`}>{props.children}</p>;
-
-ReactDOM.render(
-  <div>
-    <Button type="primary">Primary</Button>
-    <Button>Default</Button>
-    <Button type="ghost">Ghost</Button>
-    <Button type="dashed">Dashed</Button>
-  </div>
-,
- document.getElementById('hello'));
-
-ReactDOM.render(
-  <div>
-    <CheckBox>Checkbox</CheckBox>
-  </div>
-,
- document.getElementById('checkboxdemo'));
- 
-
-function showConfirm() {
-  confirm({
-    title: '您是否确认要删除这项内容',
-    content: '点确认 1 秒后关闭',
-    onOk() {
-      return new Promise((resolve) => {
-        setTimeout(resolve, 1000);
-      });
-    },
-    onCancel() {},
-  });
-}
-
-ReactDOM.render(
-  <Button onClick={showConfirm}>
-    确认对话框
-  </Button>
-,
- document.getElementById('modal'));
- 
- const App = React.createClass({
-  getInitialState() {
-    return { visible: false };
-  },
-  showModal() {
-    this.setState({
-      visible: true,
-    });
-  },
-  handleOk() {
-    console.log('点击了确定');
-    this.setState({
-      visible: false,
-    });
-  },
-  handleCancel(){
-    console.log('点击了取消');
-    this.setState({
-      visible: false,
-    });
-  },
+const App = React.createClass({
   render() {
     return (
-      <div>
-        <Button type="primary" onClick={this.showModal}>显示对话框</Button>
-        <Modal title="第一个 Modal" visible={this.state.visible}
-          onOk={this.handleOk} onCancel={this.handleCancel}
-        >
-          <p>对话框的内容</p>
-          <p>对话框的内容</p>
-          <p>对话框的内容</p>
-        </Modal>
-      </div>
+        <div>
+          <header id="header">
+            <Headdiv />
+          </header>
+          <div>
+              <Row>
+              <Col xs={24} sm={24} md={6} lg={4} >
+                <LeftPage />
+              </Col>
+              <Col xs={24} sm={24} md={18} lg={20}>{this.props.children}</Col>
+              </Row>
+          </div>
+          <footer id="footer"></footer>
+        </div> 
     );
   },
 });
-
-ReactDOM.render(<App />, document.getElementById('modal2'));
-
-const TreeNode=Tree.TreeNode;
-const Demo = React.createClass({
-  getDefaultProps() {
-    return {
-      keys: ['0-0-0', '0-0-1'],
-    };
-  },
-  getInitialState() {
-    const keys = this.props.keys;
-    return {
-      defaultExpandedKeys: keys,
-      defaultSelectedKeys: keys,
-      defaultCheckedKeys: keys,
-    };
-  },
-  onSelect(info) {
-    console.log('selected', info);
-  },
-  onCheck(info) {
-    console.log('onCheck', info);
-  },
-  render() {
-    return (
-      <Tree className="myCls" showLine checkable
-        defaultExpandedKeys={this.state.defaultExpandedKeys}
-        defaultSelectedKeys={this.state.defaultSelectedKeys}
-        defaultCheckedKeys={this.state.defaultCheckedKeys}
-        onSelect={this.onSelect} onCheck={this.onCheck}
-      >
-        <TreeNode title="parent 1" key="0-0">
-          <TreeNode title="parent 1-0" key="0-0-0" >
-            <TreeNode title="leaf" key="0-0-0-0"  />
-            <TreeNode title="leaf" key="0-0-0-1" />
-          </TreeNode>
-          <TreeNode title="parent 1-1" key="0-0-1">
-            <TreeNode title={<span style={{ color: '#08c' }}>sss</span>} key="0-0-1-0" />
-          </TreeNode>
-        </TreeNode>
-      </Tree>
-    );
-  },
-});
-
-ReactDOM.render(<Demo />, document.getElementById('tree'));
- 
- 
+ReactDOM.render(
+  <Router history={hashHistory}>
+    <Route path="/" component={App}>
+      <IndexRoute component={Page}/>
+      <Route path="/page" component={Page} />
+      <Route path="/button" component={Button} />
+      <Route path="/icon" component={Icon} />
+      <Route path="/alert" component={Alert} />
+      <Route path="/checkbox" component={Checkbox} />
+      <Route path="/modal" component={Modal} />
+      <Route path="/timeline" component={Timeline} />
+      <Route path="/carousel" component={Carousel} />
+      <Route path="/tree" component={Tree}/>
+      <Route path="/complete" component={Complete}/>
+      <Route path="/upload" component={Upload}/>
+      <Route path="/grid" component={Grid}/>
+    </Route>
+  </Router>
+,
+ document.getElementById('root'));
